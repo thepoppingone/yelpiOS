@@ -10,30 +10,44 @@ import UIKit
 
 class BusinessesViewController: UIViewController {
 
+    // MARK: Outlets and Actions
+    @IBOutlet weak var resultsLabel: UILabel!
+    
+    
+    @IBAction func runSearch(sender: AnyObject) {
+        
+        Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
+            self.businesses = businesses
+            
+            for business in businesses {
+                self.resultsLabel.text?.appendContentsOf(business.name!)
+                print(business.name!)
+                print(business.address!)
+                
+            }
+        })
+        
+        /* Example of Yelp search with more search options specified
+        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
+        self.businesses = businesses
+        
+        for business in businesses {
+        print(business.name!)
+        print(business.address!)
+        }
+        }
+        */
+        
+    }
+    
+    // MARK: Application Logic
+    
+    
     var businesses: [Business]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses
-        
-            for business in businesses {
-                print(business.name!)
-                print(business.address!)
-            }
-        })
-
-/* Example of Yelp search with more search options specified
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses
-            
-            for business in businesses {
-                print(business.name!)
-                print(business.address!)
-            }
-        }
-*/
     }
 
     override func didReceiveMemoryWarning() {
